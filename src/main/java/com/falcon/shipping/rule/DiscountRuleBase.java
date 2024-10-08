@@ -43,6 +43,11 @@ public abstract class DiscountRuleBase {
     return false;
   }
 
+  protected double getPrice(String provider, String packageSize) {
+    // Return the price if found, otherwise return 0.0
+    return shipmentOptions.getOrDefault(provider, Map.of()).getOrDefault(packageSize, 0.0);
+  }
+
   // Abstract method to be implemented by specific rules to define how they apply
   public abstract boolean applyRule(ShipmentTransaction transaction);
 }

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DiscountCalculatorEndToEndTest {
 
   private DiscountCalculator discountCalculator;
-  private List<ShipmentTransaction> transactions;
+  private List<ShipmentTransaction> shipmentTransactions;
   private String expectedOutputFilePath;
 
   @BeforeEach
@@ -30,7 +30,7 @@ public class DiscountCalculatorEndToEndTest {
 
     // Load transactions and price map
     var shipmentTransactionRepository = new ShipmentTransactionFileParser();
-    var shipmentTransactions = shipmentTransactionRepository.loadTransactionsFromFile(shipmentTransactionsFile);
+    shipmentTransactions = shipmentTransactionRepository.loadTransactionsFromFile(shipmentTransactionsFile);
 
     var shipmentOptionRepository = new ShipmentOptionFileParser();
     var shipmentOptions = shipmentOptionRepository.loadOptionsFromFile(shipmentOptionsFile);
@@ -45,12 +45,13 @@ public class DiscountCalculatorEndToEndTest {
 
     // Initialize DiscountManager
     discountCalculator = new DiscountCalculator(shipmentOptions, discountRules);
+
   }
 
   @Test
   public void testProcessTransactions_withExpectedOutput() throws Exception {
     // Process transactions
-    List<String> actualOutput = discountCalculator.processTransactions(transactions);
+    List<String> actualOutput = discountCalculator.processTransactions(shipmentTransactions);
 
     // Read the expected output file
     List<String> expectedOutput = Files.readAllLines(Paths.get(expectedOutputFilePath));
